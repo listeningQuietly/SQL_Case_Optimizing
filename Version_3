@@ -1,0 +1,26 @@
+/*
+Q: Same as before.
+A: Use CASE statements to sort through combinations of 3 Attributes more efficiently than Version_2 while maintaining same level of accuracy.
+Pros:
+ 1) The runtime is shorter (improved), because WHENs with fewer conditionals are evaluated earlier, but the percentage of improvement is reliant on how often Attribute_1=1, Attribute_2=1, and Attribute_3=1 occurs.
+Cons:
+ 1) The structure is deceptively simple because order matters significantly more than previously (number of conditionals AND which conditionals matters).
+ 2) It is dependent on the data if it is an upgrade, so to 'maintain' the improvement, reordering must be considered with every data update, which might be realtime.
+
+Update Summary: Traded simplicity of order for shorter runtime based on the data points and assuming uneven distribution favoring combinations with Attribute_1 before the others, then Attibute_2 before Attribute_3.
+*/
+SELECT
+t1.primary_key
+,CASE
+  WHEN t1.Attribute_1 = 1 AND t1.Attribute_2 = 1 AND t1.Attribute_3 = 1 THEN 7
+  WHEN t1.Attribute_1 = 1 AND t1.Attribute_2 = 1 THEN 6
+  WHEN t1.Attribute_1 = 1 AND t1.Attribute_3 = 1 THEN 5
+  WHEN t1.Attribute_1 = 1 THEN 1
+  WHEN t1.Attribute_2 = 1 AND t1.Attribute_3 = 1 THEN 4
+  WHEN t1.Attribute_2 = 1 THEN 2
+  WHEN t1.Attribute_3 = 1 THEN 3
+  ELSE 0
+END AS Results
+FROM Tables_skema.Table AS t1
+WHERE Results <> 0
+;
