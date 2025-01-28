@@ -1,0 +1,35 @@
+/*
+Q: Use CASE statements to segment rows across three independent traits (Attribute_1, Attribute_2, and Attribute_3) that only include values of 0s and 1s while ignoring the all 0s segment.
+A: Use CASE statements to sort through combinations of 3 Attributes most efficiently (Final Version).
+Pros:
+  1) The runtime is now completely optimized because the maximum number of conditionals evaluated is the same as the number of attributes (12/8 => 3/8).
+  2) The maintenance costs spent reworking the syntax to maintain advantage are eliminated because the combination bias (Attribute_1 over Attribute_2 over Attribute_3) is eliminated.
+Cons:
+  1) The syntax is tedious to expand.
+
+Summary Update: Traded complex, biased syntax that requires constant maintenance for syntax that is tedious to expand, but will always have the fastest runtime possible and also does not require constant reworking.
+*/
+SELECT
+t1.primary_key
+,CASE
+  WHEN t1.Attribute_1 = 1
+    THEN CASE
+      WHEN t1.Attribute_2 = 1
+        THEN CASE
+          WHEN t1.Attribute_3 = 1 THEN 7
+          ELSE 6
+        END
+      WHEN t1.Attribute_3 = 1 THEN 5
+      ELSE 1
+    END
+  WHEN t1.Attribute_2 = 1 
+    THEN CASE
+      WHEN t1.Attribute_3 = 1 THEN 4
+      ELSE 2
+    END
+  WHEN t1.Attribute_3 = 1 THEN 3
+  ELSE 0
+END AS Results
+FROM Tables_skema.Table AS t1
+WHERE Results <> 0
+;
