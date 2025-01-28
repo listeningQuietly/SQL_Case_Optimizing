@@ -1,0 +1,29 @@
+/*
+Q: Same as before.
+A: Use CASE statements and sort through combinations of 3 Attributes more efficiently than Version_1 while maintaining same level of accuracy.
+Pros:
+ 1) The runtime is significantly shorter because 43% fewer conditionals (21/8 => 12/8) are evaluated, lowering average evaluations per WHEN, assuming even distributions.
+ 2) The conditionals and outputs are easier to maintain as integers.
+ 3) The structure is simple enough to understand.
+ 4) The order of WHENs *with the same number of conditionals* does not matter.
+Cons:
+ 1) The order of the WHENs matters and requires the more complex WHENs earlier than their simpler counterparts to maintain accuracy.
+ 2) Documentation for what the various outputs represent will need to be maintained (like a legend on a map). It isn't hard, but does require maintaining.
+
+Update Summary: Traded WHEN order simplicity for significantly shorter runtime via 43% fewer conditionals and decreased maintenance cost via changed data types.
+*/
+SELECT
+t1.primary_key
+,CASE
+  WHEN t1.Attribute_1 = 1 AND t1.Attribute_2 = 1 AND t1.Attribute_3 = 1 THEN 7
+  WHEN t1.Attribute_1 = 1 AND t1.Attribute_2 = 1 THEN 6
+  WHEN t1.Attribute_1 = 1 AND t1.Attribute_3 = 1 THEN 5
+  WHEN t1.Attribute_2 = 1 AND t1.Attribute_3 = 1 THEN 4
+  WHEN t1.Attribute_1 = 1 THEN 1
+  WHEN t1.Attribute_2 = 1 THEN 2
+  WHEN t1.Attribute_3 = 1 THEN 3
+  ELSE 0
+END AS Results
+FROM Tables_skema.Table AS t1
+WHERE Results <> 0
+;
